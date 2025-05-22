@@ -3,17 +3,20 @@ using UnityEngine;
 
 public class InputService : MonoBehaviour
 {
-    public event Action EnterButtonClicked;
+    private const string HorizontalAxis = "Horizontal";
+    private const KeyCode JumpButton = KeyCode.Space;
+
+    public event Action JumpButtonClicked;
 
     public float Horizontal { get; private set; }
 
     private void Update()
     {
-        Horizontal = Input.GetAxis(nameof(Horizontal));
+        Horizontal = Input.GetAxis(HorizontalAxis);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(JumpButton))
         {
-            EnterButtonClicked?.Invoke();
+            JumpButtonClicked?.Invoke();
         }
     }
 }

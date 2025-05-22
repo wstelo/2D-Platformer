@@ -3,14 +3,14 @@ using UnityEngine;
 public class EnemyAreaCollector : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private PatrolPointCollector _patrolCollector;
+    [SerializeField] private PointCollector _pointCollector;
 
     private void Awake()
-    {
+    {        
         SpawnPoint = _spawnPoint;
-        PatrolPoints = _patrolCollector;
+        PointCollector = _pointCollector;
     }
 
     public Transform SpawnPoint { get; private set; } 
-    public PatrolPointCollector PatrolPoints { get; private set; }
+    public PointCollector PointCollector { get; private set; }
 }

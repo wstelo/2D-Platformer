@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private EnemyMover _prefab;
+    [SerializeField] private Enemy _prefab;
     [SerializeField] private List<EnemyAreaCollector> _spawnArea;
 
-    private void Awake()
+    private void Start()
     {
         Instantiate(_prefab);
     }
 
-    private void Instantiate(EnemyMover prefab)
+    private void Instantiate(Enemy prefab)
     {
         for (int i = 0; i < _spawnArea.Count; i++)
         {
             var newEnemy = Instantiate(prefab, _spawnArea[i].SpawnPoint.position, Quaternion.identity);
-            newEnemy.Initialize(_spawnArea[i].PatrolPoints);
+            newEnemy.Initialize(_spawnArea[i].PointCollector);
         }
     }
 }
