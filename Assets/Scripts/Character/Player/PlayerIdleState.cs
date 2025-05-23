@@ -2,29 +2,38 @@ using UnityEngine;
 
 public class PlayerIdleState : State
 {
-    private Animator _animator;
-    private Player _characterController;
+    private AnimatorController _animator;
+    private Mover _mover;
+    private GroundChecker _groundChecker;
+    private InputService _inputService;
 
-    public PlayerIdleState(StateMachine stateMachine, Animator animator, Player character) : base(stateMachine)
+    public PlayerIdleState(StateMachine stateMachine, AnimatorController animator, Mover mover, GroundChecker groundChecker, InputService inputService) : base(stateMachine)
     {
         _animator = animator;
-        _characterController = character;
+        _mover = mover;
+        _groundChecker = groundChecker;
+        _inputService = inputService;
     }
 
     public override void Enter()
     {
-        _animator.Play(PlayerAnimationData.Parameters.Idle);
+        _animator.StartIdleAnimation();
     }
 
     public override void Update()
     {
-        if (_characterController.HorizontalDirection != 0)
+        if (_mover.HorizontalDirection != 0)
         {
-            stateMachine.SetState<PlayerMoveState>();
+            StateMachine.SetState<PlayerMoveState>();
         }
-        if (_characterController.IsGround && _characterController.IsJump && _characterController.HorizontalDirection == 0)
+        if (_groundChecker.IsGrounded && _inputService.IsJump && _mover.HorizontalDirection == 0)
         {
-            stateMachine.SetState<PlayerJumpState>();
+            StateMachine.SetState<PlayerJumpState>();
         }
+    }
+
+    public override void Exit()
+    {
+        _animator.StopIdleAnimation();
     }
 }

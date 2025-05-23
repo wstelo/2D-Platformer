@@ -6,9 +6,8 @@ public class InputService : MonoBehaviour
     private const string HorizontalAxis = "Horizontal";
     private const KeyCode JumpButton = KeyCode.Space;
 
-    public event Action JumpButtonClicked;
-
     public float Horizontal { get; private set; }
+    public bool IsJump {  get; private set; }
 
     private void Update()
     {
@@ -16,7 +15,11 @@ public class InputService : MonoBehaviour
 
         if (Input.GetKeyDown(JumpButton))
         {
-            JumpButtonClicked?.Invoke();
+            IsJump = true;
+        }
+        else if(Input.GetKeyUp(JumpButton))
+        {
+            IsJump = false;
         }
     }
 }

@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    private Character _character;
+    private Mover _mover;
+    private Quaternion leftRotation = Quaternion.Euler(0, 180, 0);
+    private Quaternion rightRotation = Quaternion.identity;
 
     private void Awake()
     {
-        _character = GetComponent<Character>();
+        _mover = GetComponent<Mover>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        float horizontalDirection = _character.HorizontalDirection;
+        float horizontalDirection = _mover.HorizontalDirection;
 
-        if(horizontalDirection > 0)
+        if (horizontalDirection > 0)
         {
-            transform.rotation = Quaternion.identity;
+            transform.rotation = rightRotation;
         }
-        else if(horizontalDirection < 0)
+        else if (horizontalDirection < 0)
         {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            transform.rotation = leftRotation;
         }
     }
 
@@ -27,11 +29,11 @@ public class Rotator : MonoBehaviour
     {
         if(transform.rotation.y == 0)
         {
-            transform.rotation = Quaternion.Euler(0,180,0);
+            transform.rotation = leftRotation;
         }
         else
         {
-            transform.rotation = Quaternion.identity;
+            transform.rotation = rightRotation;
         }
     }
 }

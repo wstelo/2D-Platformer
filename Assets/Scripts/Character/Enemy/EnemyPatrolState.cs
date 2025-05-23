@@ -1,31 +1,28 @@
 using UnityEngine;
 
-
 public class EnemyPatrolState : State
 {
     private PointCollector _patrolPointsCollector;
-    private Animator _animator;
+    private AnimatorController _animator;
     private Transform _currentTarget;
     private Mover _mover;
-    private Character _character;
     private int _currentTargetIndex = 0;
     private bool _isCome = false;
     private float _distanceToTarget = 1f;
     private float _moveSpeed;
 
-    public EnemyPatrolState(StateMachine stateMachine, PointCollector patrolPoints, Animator animator, Mover enemyMover,Character character, float moveSpeed) : base(stateMachine)
+    public EnemyPatrolState(StateMachine stateMachine, PointCollector patrolPoints, AnimatorController animator, Mover mover, float moveSpeed) : base(stateMachine)
     {
         _patrolPointsCollector = patrolPoints;
         _animator = animator;
-        _mover = enemyMover;
+        _mover = mover;
         _moveSpeed = moveSpeed;
-        _character = character;
     }
 
     public override void Enter()
     {
         _isCome = false;
-        _animator.Play(PlayerAnimationData.Parameters.Run);
+        _animator.StartRunAnimation();
         _currentTarget = GetNextPoint();
     }
 
@@ -34,8 +31,8 @@ public class EnemyPatrolState : State
         if (_mover.transform.position.IsEnoughClose(_currentTarget.position, _distanceToTarget))
         {
             _isCome = true;
-            _character.ResetDirection();
-            stateMachine.SetState<EnemyCheckAreaState>();
+            _mover.ResetDirection();
+            StateMachine.SetState<EnemyCheckAreaState>();
         }
     }
 
@@ -54,9 +51,14 @@ public class EnemyPatrolState : State
                 direction.x = -1;
             }
 
-            _character.SetDirection(direction.x);          
+            _mover.SetDirection(direction.x);          
             _mover.Move(direction, _moveSpeed);
         }
+    }
+
+    public override void Exit()
+    {
+        _animator.StopRunAnimation();
     }
 
     private Transform GetNextPoint()

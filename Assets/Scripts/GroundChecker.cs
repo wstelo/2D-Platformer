@@ -1,29 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class GroundChecker : MonoBehaviour
 {
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private float _rayDistance = 0.3f;
+    [SerializeField] private float _pointPositionY = - 0.3f;
+    [SerializeField] private float _rayRadius = 0.3f;
+    private Vector2 drawPoint;
 
     public bool IsGrounded { get; private set; } = false;
 
-    private void FixedUpdate()
+
+    private void Update()
     {
-        CheckGround();
+        CheckGroundCollision();
     }
 
-    private void CheckGround()
+    private void CheckGroundCollision()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, _rayDistance, _groundLayer);
-        IsGrounded = hit.collider != null;
+        drawPoint = transform.position + new Vector3(0, _pointPositionY);
+        Collider2D hit = Physics2D.OverlapCircle(drawPoint, _rayRadius,_groundLayer);
+        IsGrounded = hit != null;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = IsGrounded ? Color.green : Color.red;
-        Gizmos.DrawRay(transform.position, Vector2.down * _rayDistance);
+        Gizmos.DrawSphere(transform.position + new Vector3(0, _pointPositionY), _rayRadius);
     }
 }

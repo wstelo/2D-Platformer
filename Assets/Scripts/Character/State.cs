@@ -2,11 +2,11 @@ using UnityEngine;
 
 public abstract class State
 {
-    protected readonly StateMachine stateMachine;
+    protected readonly StateMachine StateMachine;
 
     public State(StateMachine stateMachine)
     {
-        this.stateMachine = stateMachine;
+        StateMachine = stateMachine;
     }
 
     public virtual void Enter() { }
